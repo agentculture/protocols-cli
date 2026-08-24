@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 Format follows [Keep a Changelog](https://keepachangelog.com/). This project
 adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.7.1] - 2026-08-24
+
+### Changed
+
+- **`CLAUDE.md` re-initialized from the `/init` seed placeholder into a full runtime prompt** — documents the agent identity (`backend: colleague` → `AGENTS.colleague.md` as the resident prompt file), the CI-exact command and lint set, the agent-first rubric obligations that shape the CLI surface (why `cli.py` exists, why `overview` takes an ignored `target`), a checklist for adding a command, the bump-every-PR rule, and the cite-don't-import rule for `.claude/skills/`. States plainly that the Culture Protocols domain surface is not built yet.
+- **`README.md` rewritten as the agent's README** — drops the clonable-template framing (`What you get` / `Make it your own` / package-rename instructions) inherited from `culture-agent-template`, describes the Culture Protocols domain with an explicit scaffold-status callout, and adds a Development section covering the version-check rule and the CI lint commands.
+
+### Fixed
+
+- **Documented the `markdownlint-cli2` install step** in `CLAUDE.md` and `README.md` — both blocks claimed to mirror CI's lint sequence but omitted CI's preceding `npm install -g markdownlint-cli2@0.21.0`, so a fresh machine following them failed at that step (markdownlint is an npm tool, not a `dev` dependency-group entry). The README block omitted the markdownlint invocation entirely. Both now carry the pinned install. (qodo review, PR #2)
+
+- **README documented a command that does not exist** — the quickstart and examples invoked `uv run protocols-cli …`, but `[project.scripts]` binds the console script as `protocols`. The README now uses `protocols` and calls out the split (dist name, argparse `prog`, and all help/`explain` text say `protocols-cli`; only the entry point is short).
+- **Stale skill count in `README.md`** — claimed 11 vendored skills under `.claude/skills/`; there are 18. The upstream list also spans guildmaster, devague, colleague and eidetic-cli, not guildmaster alone.
+
 ## [0.7.0] - 2026-08-24
 
 ### Added

@@ -1,6 +1,6 @@
 [project]
 name = "protocols-cli"
-version = "0.7.0"
+version = "0.7.1"
 description = "Maintains Culture Protocols — a workflow system in which agents, bots and humans describe how work is done, by whom, and under a verifiable contract. Author, version and validate protocol definitions, then check a completed run against the contract it promised."
 readme = "README.md"
 license = "Apache-2.0"

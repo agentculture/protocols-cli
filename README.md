@@ -1,16 +1,26 @@
 # protocols-cli
 
-Maintains Culture Protocols — a workflow system in which agents, bots and humans describe how work is done, by whom, and under a verifiable contract. Author, version and validate protocol definitions, then check a completed run against the contract it promised.
+Maintains **Culture Protocols** — a workflow system in which agents, bots and
+humans describe how work is done, by whom, and under a verifiable contract.
+The intended surface is authoring, versioning and validating protocol
+definitions, then checking a completed run against the contract it promised.
 
-## What you get
+> **Status: scaffold.** The protocol surface described above is not built yet.
+> What ships today is the agent-first CLI skeleton, the mesh identity, and the
+> vendored skill kit — see [What's here](#whats-here). Protocol verbs arrive as
+> new noun groups under `protocols/cli/_commands/`.
+
+## What's here
 
 - **An agent-first CLI** cited from [teken](https://github.com/agentculture/teken)
   (`afi-cli`) — the runtime package has no third-party dependencies.
-- **A mesh identity** — `culture.yaml` (`suffix` + `backend`) and the matching
-  resident prompt file (`AGENTS.colleague.md`, since this template runs
-  `backend: colleague`).
-- **The canonical guildmaster skill kit** (11 skills) under `.claude/skills/`,
-  vendored cite-don't-import. See [`docs/skill-sources.md`](docs/skill-sources.md).
+- **A mesh identity** — `culture.yaml` (`suffix: protocols-cli`,
+  `backend: colleague`) and the matching resident prompt file
+  `AGENTS.colleague.md`.
+- **18 vendored skills** under `.claude/skills/`, cited-not-imported from
+  guildmaster, devague, colleague and eidetic-cli. See
+  [`docs/skill-sources.md`](docs/skill-sources.md) for provenance and re-sync
+  commands.
 - **A build + deploy baseline** — pytest, lint, the agent-first rubric gate, and
   PyPI Trusted Publishing wired into GitHub Actions.
 
@@ -19,10 +29,15 @@ Maintains Culture Protocols — a workflow system in which agents, bots and huma
 ```bash
 uv sync
 uv run pytest -n auto                 # run the test suite
-uv run protocols-cli whoami  # identity from culture.yaml
-uv run protocols-cli learn   # self-teaching prompt (add --json)
+uv run protocols whoami               # identity from culture.yaml
+uv run protocols learn                # self-teaching prompt (add --json)
 uv run teken cli doctor . --strict    # the agent-first rubric gate CI runs
 ```
+
+> **The installed command is `protocols`.** The distribution, the argparse
+> `prog`, and the CLI's own help and `explain` text all say `protocols-cli`;
+> only `[project.scripts]` binds the shorter `protocols`. Invoke `protocols`,
+> read `protocols-cli` in the output.
 
 ## CLI
 
@@ -39,20 +54,26 @@ Every command supports `--json`. Results go to stdout, errors/diagnostics to
 stderr (never mixed). Exit codes: `0` success, `1` user error, `2` environment
 error, `3+` reserved.
 
-## Make it your own
+## Development
 
-1. Rename the package `protocols/` and the `protocols-cli`
-   CLI/dist name throughout `pyproject.toml`, the package, `tests/`,
-   `sonar-project.properties`, and this `README.md`. The name is hard-coded in
-   ~100 places, so list every occurrence first — see the `git grep` discovery
-   command in [`CLAUDE.md`](CLAUDE.md), the authoritative rename procedure.
-2. Edit `culture.yaml` with your `suffix` and `backend`.
-3. Rewrite `CLAUDE.md` for your agent and run `/init`.
-4. Re-vendor only the skills you need from guildmaster (see
-   [`docs/skill-sources.md`](docs/skill-sources.md)).
+Every PR bumps the version — the `version-check` CI job fails when
+`pyproject.toml` matches `main`. Lint locally the way CI does:
 
-See [`CLAUDE.md`](CLAUDE.md) for the full conventions (version-bump-every-PR,
-the `cicd` PR lane, deploy setup).
+```bash
+uv run black --check protocols tests
+uv run isort --check-only protocols tests
+uv run flake8 protocols tests
+uv run bandit -c pyproject.toml -r protocols
+
+# markdownlint comes from npm, not the dev group — install once, pinned to the
+# version CI uses:
+npm install -g markdownlint-cli2@0.21.0
+markdownlint-cli2 "**/*.md" "#node_modules" "#.local" "#.claude/skills" "#.teken"
+```
+
+See [`CLAUDE.md`](CLAUDE.md) for the full conventions — the rubric obligations
+that shape the CLI, how to add a command, the PR lane, and the
+cite-don't-import rule for `.claude/skills/`.
 
 ## License
 
