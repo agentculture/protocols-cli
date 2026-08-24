@@ -39,8 +39,15 @@ uv run black --check protocols tests
 uv run isort --check-only protocols tests
 uv run flake8 protocols tests
 uv run bandit -c pyproject.toml -r protocols
+
+# markdownlint is not a dev-group dep — CI installs it via npm first, and so
+# must you, once, on a fresh machine:
+npm install -g markdownlint-cli2@0.21.0
 markdownlint-cli2 "**/*.md" "#node_modules" "#.local" "#.claude/skills" "#.teken"
 ```
+
+Pin the same version CI does; a newer markdownlint can flag rules this repo's
+`.markdownlint-cli2.yaml` was never checked against.
 
 **The installed console script is `protocols`, not `protocols-cli`.** The dist
 name, the argparse `prog`, and every string in the help/explain/learn text say

@@ -64,6 +64,11 @@ uv run black --check protocols tests
 uv run isort --check-only protocols tests
 uv run flake8 protocols tests
 uv run bandit -c pyproject.toml -r protocols
+
+# markdownlint comes from npm, not the dev group — install once, pinned to the
+# version CI uses:
+npm install -g markdownlint-cli2@0.21.0
+markdownlint-cli2 "**/*.md" "#node_modules" "#.local" "#.claude/skills" "#.teken"
 ```
 
 See [`CLAUDE.md`](CLAUDE.md) for the full conventions — the rubric obligations

@@ -14,6 +14,8 @@ adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ### Fixed
 
+- **Documented the `markdownlint-cli2` install step** in `CLAUDE.md` and `README.md` — both blocks claimed to mirror CI's lint sequence but omitted CI's preceding `npm install -g markdownlint-cli2@0.21.0`, so a fresh machine following them failed at that step (markdownlint is an npm tool, not a `dev` dependency-group entry). The README block omitted the markdownlint invocation entirely. Both now carry the pinned install. (qodo review, PR #2)
+
 - **README documented a command that does not exist** — the quickstart and examples invoked `uv run protocols-cli …`, but `[project.scripts]` binds the console script as `protocols`. The README now uses `protocols` and calls out the split (dist name, argparse `prog`, and all help/`explain` text say `protocols-cli`; only the entry point is short).
 - **Stale skill count in `README.md`** — claimed 11 vendored skills under `.claude/skills/`; there are 18. The upstream list also spans guildmaster, devague, colleague and eidetic-cli, not guildmaster alone.
 
